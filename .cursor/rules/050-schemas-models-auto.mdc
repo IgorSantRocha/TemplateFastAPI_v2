@@ -1,0 +1,49 @@
+---
+description: "Regras para schemas Pydantic e models SQLAlchemy."
+globs: ["schemas/**/*.py", "models/**/*.py"]
+alwaysApply: false
+---
+# Regras para schemas e models
+
+## Models SQLAlchemy
+
+Models devem representar tabelas e relacionamentos.
+
+Regras:
+
+- Não coloque regra de negócio pesada em model.
+- Não faça chamada externa em model.
+- Use nomes claros para colunas.
+- Preserve tipos compatíveis com o banco.
+- Configure `relationship` apenas quando necessário.
+
+## Schemas Pydantic
+
+Schemas devem representar entrada e saída da API.
+
+Padrão recomendado:
+
+```python
+class CarBase(BaseModel):
+    model: str | None = None
+
+class CarCreate(CarBase):
+    model: str
+
+class CarUpdate(CarBase):
+    pass
+
+class CarInDbBase(CarBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+```
+
+## Regras de schema
+
+- Use schemas diferentes para create, update e response.
+- Não use model SQLAlchemy como response_model.
+- Não exponha campos sensíveis em response.
+- Use `from_attributes = True` em Pydantic v2 quando retornar objetos ORM.
+- Para campos opcionais, deixe claro quando são opcionais de verdade.

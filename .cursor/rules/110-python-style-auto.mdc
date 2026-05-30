@@ -1,0 +1,37 @@
+---
+description: "Regras de estilo Python para arquivos .py do projeto."
+globs: ["**/*.py"]
+alwaysApply: false
+---
+# Estilo Python
+
+## Regras gerais
+
+- Use tipagem sempre que possível.
+- Prefira funções pequenas e claras.
+- Evite duplicação de código.
+- Use nomes explícitos.
+- Mantenha imports organizados.
+- Remova imports não usados.
+
+## Async
+
+- Se a camada usa `AsyncSession`, mantenha métodos async.
+- Use `await` em chamadas async.
+- Não misture sync e async sem necessidade.
+
+## Exceptions
+
+- Use `HTTPException` em service quando representar erro de API/regra de negócio.
+- Não use `except Exception` sem registrar ou tratar adequadamente.
+- Não silencie erros com `pass`.
+
+## Retornos
+
+- Prefira retornar objetos compatíveis com o `response_model`.
+- Não retorne dados sensíveis.
+
+## Comentários
+
+- Comente regras de negócio complexas.
+- Evite comentar o óbvio.

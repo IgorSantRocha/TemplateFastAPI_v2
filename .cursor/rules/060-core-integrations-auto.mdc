@@ -1,0 +1,65 @@
+---
+description: "Regras para core e integrações externas: OAuth2, API key, certificados, request clients e settings."
+globs: ["core/**/*.py", "services/**/*external*.py", "services/**/*client*.py", "examples/oauth2_clients/**/*.py"]
+alwaysApply: false
+---
+# Regras para core e integrações externas
+
+## Responsabilidade do core
+
+A pasta `core/` deve centralizar recursos compartilhados:
+
+- settings/configurações
+- segurança
+- autenticação
+- clients HTTP externos
+- OAuth2
+- API keys
+- certificados/mTLS
+- tratamento padrão de erro externo
+
+## Regras para clients externos
+
+- Use `httpx.AsyncClient` para chamadas async.
+- Centralize timeout.
+- Centralize headers padrão.
+- Centralize autenticação.
+- Reutilize o client abstrato quando possível.
+- Não coloque chamada HTTP diretamente em endpoint.
+
+## Autenticações comuns suportadas
+
+Ao criar integração, considere:
+
+- Sem autenticação.
+- API Key em header.
+- API Key em query param.
+- Bearer token fixo.
+- Basic Auth.
+- OAuth2 Client Credentials.
+- OAuth2 Password Grant, apenas se a API exigir.
+- Client Secret no Basic Auth ou no body.
+- Certificado/mTLS.
+- CA bundle customizado.
+
+## Segurança
+
+Nunca comite:
+
+- token real
+- client secret real
+- senha real
+- certificado real
+- chave privada
+- `.env` com credenciais
+
+Use `settings` e variáveis de ambiente.
+
+## Tratamento de erro externo
+
+Ao consumir API externa:
+
+- Retorne erro padronizado.
+- Preserve status code externo quando fizer sentido.
+- Inclua endpoint e payload apenas se não houver dados sensíveis.
+- Nunca vaze secrets em logs ou exceções.

@@ -1,0 +1,52 @@
+---
+description: "Regras globais de arquitetura: separação de camadas, fluxo de criação e organização de arquivos."
+alwaysApply: true
+---
+# Arquitetura e organização
+
+## Fluxo recomendado para criar uma nova feature
+
+Ao criar um novo módulo, siga esta ordem:
+
+1. `models/`: crie ou ajuste o model SQLAlchemy.
+2. `schemas/`: crie schemas de create, update, response e base.
+3. `crud/`: crie o CRUD herdando do padrão genérico do projeto.
+4. `services/`: crie a regra de negócio e validações.
+5. `api/api_v1/endpoints/`: crie as rotas chamando o service.
+6. `api/api_v1/api.py`: registre o router, quando necessário.
+7. `tests/`: crie testes de service e endpoint.
+8. `README.md` da pasta: atualize quando a estrutura mudar.
+
+## Convenções de nomes
+
+Use nomes claros e consistentes:
+
+- Model: `Car`, `ServiceOrder`, `User`
+- Schema create: `CarCreate`
+- Schema update: `CarUpdate`
+- Schema response/base: `CarInDbBase`, `CarResponse`
+- CRUD class: `CRUDCar`
+- CRUD instance: `crud_car` ou o padrão já existente no módulo
+- Service class: `CarService`
+- Service instance: `car_service`
+
+## Regras de dependência entre camadas
+
+Permitido:
+
+```text
+endpoint importa service
+service importa crud, schemas, models quando necessário
+crud importa model e schemas
+schema não importa service
+model não importa service
+```
+
+Evite dependência circular.
+
+## Ao modificar código existente
+
+- Preserve compatibilidade com o padrão atual do projeto.
+- Não renomeie classes, arquivos ou métodos sem necessidade.
+- Quando sugerir alteração em arquivo enviado pelo usuário, entregue o arquivo completo ajustado.
+- Explique precisamente o que foi adicionado, alterado ou removido.

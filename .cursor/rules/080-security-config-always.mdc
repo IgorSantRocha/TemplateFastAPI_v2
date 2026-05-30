@@ -1,0 +1,52 @@
+---
+description: "Regras globais de segurança, configurações, secrets, logs e variáveis de ambiente."
+alwaysApply: true
+---
+# Segurança e configuração
+
+## Nunca exponha dados sensíveis
+
+Não escreva no código:
+
+- senhas reais
+- tokens reais
+- api-keys reais
+- client secrets reais
+- certificados reais
+- chaves privadas reais
+- dados pessoais desnecessários
+
+## Configurações
+
+- Use `core.config.settings` quando existir.
+- Use variáveis de ambiente para secrets.
+- Use `.env.example` para documentar variáveis sem valores reais.
+- Não coloque `.env` real em commits.
+
+## Logs
+
+Logs devem ajudar no diagnóstico sem vazar dados sensíveis.
+
+Permitido:
+
+- id da operação
+- status code
+- nome do endpoint externo
+- tempo de execução
+- mensagem de erro sem segredo
+
+Evite:
+
+- payload completo com dados sensíveis
+- headers completos
+- Authorization
+- cookies
+- certificados
+
+## APIs externas
+
+- Centralize autenticação em `core/`.
+- Use timeout.
+- Trate falhas externas.
+- Não faça retry infinito.
+- Não esconda erro externo com mensagem genérica demais.
